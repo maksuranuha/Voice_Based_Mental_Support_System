@@ -537,21 +537,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - Accessibility advocates for inclusive design
 - Crisis counselors for safety recommendations
 
-## 📞 **Contact & Support**
-
-### **🛠️ Technical Support**
-- **GitHub Issues**: [Report bugs and request features](https://github.com/yourusername/tellafriend/issues)
-- **Documentation**: [Wiki and guides](https://github.com/yourusername/tellafriend/wiki)
-- **Community**: [Discord server](https://discord.gg/tellafriend)
-
-### **🤝 Partnerships**
-- **Mental Health Organizations**: Collaboration opportunities
-- **Educational Institutions**: Research partnerships  
-- **Healthcare Providers**: Integration discussions
-- **NGOs**: Humanitarian deployment
-
----
-
 ## 🌟 **Why TellAFriend Matters**
 
 In a world where **1 in 4 people** experience mental health challenges, language barriers shouldn't prevent anyone from getting support. TellAFriend breaks down these barriers by providing:
