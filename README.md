@@ -3,22 +3,22 @@
 *The most sophisticated multilingual mental health support AI that speaks, listens, and responds in ANY language combination*
 It enables empathetic, culturally-aware text + voice conversations in 30+ languages with real-time switching and mental health–focused support.
 
-✨ User Interface & Features
-🖥️ Initial Interface
+## ✨ User Interface & Features
+### 🖥️ Initial Interface
 
 https://github.com/user-attachments/assets/3e92cb9f-ff9c-4ac0-8f25-0b315fef6c16
 
-The clean and modern interface welcomes users with a dark, calming theme designed for sensitive conversations. From here, users can instantly start chatting or speaking in any supported language.
+- The clean and modern interface welcomes users with a dark, calming theme designed for sensitive conversations. From here, users can instantly start chatting or speaking in any supported language.
 <img width="1909" height="976" alt="A_Initial" src="https://github.com/user-attachments/assets/b6e06a74-b62b-4c89-94b6-cac426fd41da" />
 
-🌍 Multilingual Response Selection
+### 🌍 Multilingual Response Selection
 
-Users can choose their preferred response language from a simple dropdown. For example, the user may type in English but request the AI to respond in French, Arabic, or any other supported language—making cross-language mental health conversations seamless.
+- Users can choose their preferred response language from a simple dropdown. For example, the user may type in English but request the AI to respond in French, Arabic, or any other supported language—making cross-language mental health conversations seamless.
 <img width="1919" height="947" alt="Response_In_French" src="https://github.com/user-attachments/assets/a3677888-26ce-4140-a0a2-88fda833cab1" />
 
-🎙️ Voice Recording & Playback
+### 🎙️ Voice Recording & Playback
 
-The interface provides a one-click recording feature for natural, voice-based conversations. Visual indicators show when recording is active, and responses are automatically played back in the selected language with emotion-aware, natural-sounding voices.
+- The interface provides a one-click recording feature for natural, voice-based conversations. Visual indicators show when recording is active, and responses are automatically played back in the selected language with emotion-aware, natural-sounding voices.
 <img width="1919" height="1025" alt="Recording" src="https://github.com/user-attachments/assets/7c4b0efc-7027-4c10-8451-e551cc702579" />
 
 👉 Together, these features create a safe, accessible, and truly multilingual support system, allowing users to express themselves in the way that feels most natural—through text or voice, in any language.
