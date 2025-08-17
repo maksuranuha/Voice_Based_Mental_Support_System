@@ -7,6 +7,8 @@ https://github.com/user-attachments/assets/3e92cb9f-ff9c-4ac0-8f25-0b315fef6c16
 
 <img width="1909" height="976" alt="A_Initial" src="https://github.com/user-attachments/assets/b6e06a74-b62b-4c89-94b6-cac426fd41da" />
 
+<img width="1919" height="1033" alt="Response_in_English" src="https://github.com/user-attachments/assets/7716dba6-b1f7-4273-a2d9-e45fa0be3ff5" />
+
 <img width="1919" height="1025" alt="Recording" src="https://github.com/user-attachments/assets/7c4b0efc-7027-4c10-8451-e551cc702579" />
 
 ## 🌟 Revolutionary Features Overview
