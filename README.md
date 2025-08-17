@@ -437,6 +437,8 @@ With **1 in 4 people** facing mental health challenges, language barriers should
 - 🚀 **AI-powered assistance**
 - 
 ⚠️ **Note:** This project was created **solely for learning purposes** and to explore how AI responds to expressions of sadness. It is **not intended as professional mental health support**.
+
+
 ⭐ **Star this project if you like the concept!**
 
 Feel free to **use, fork, and contribute** 🚀
