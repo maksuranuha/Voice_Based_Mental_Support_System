@@ -1,8 +1,8 @@
 # 🤗 TellAFriend - Advanced Multilingual AI Mental Health Companion
 
-*The most sophisticated multilingual mental health support AI that speaks, listens, and responds in ANY language combination*
+*The most sophisticated multilingual mental health support AI that speaks, listens, and responds in ANY language combination*.
 
-It enables empathetic, culturally-aware text + voice conversations in 30+ languages with real-time switching and mental health–focused support.
+- It enables empathetic, culturally-aware text + voice conversations in 30+ languages with real-time switching and mental health–focused support.
 
 ## ✨ User Interface & Features
 ### 🖥️ Initial Interface
