@@ -425,129 +425,18 @@ git checkout -b feature/amazing-new-feature
 # 4. Test thoroughly
 # 5. Submit pull request
 ```
-
-### **🎯 Contribution Areas**
-- **New Language Support**: Add more languages
-- **Voice Improvements**: Better voice synthesis
-- **UI/UX Enhancements**: Improve user interface
-- **AI Responses**: Enhance mental health support
-- **Mobile Apps**: iOS/Android applications
-- **Documentation**: Improve guides and docs
-
-### **📋 Development Guidelines**
-- Follow PEP 8 style guide
-- Add comprehensive comments
-- Test all language combinations
-- Ensure accessibility compliance
-- Update documentation
-- Respect mental health sensitivity
-
-## 📊 **Performance & Scalability**
-
-### **⚡ Response Times**
-- **Text Chat**: < 2 seconds
-- **Voice Transcription**: 3-5 seconds  
-- **Voice Generation**: 2-4 seconds
-- **Translation**: < 1 second
-- **Total Voice-to-Voice**: 8-12 seconds
-
-### **🔄 Scalability Features**
-- **Async Processing**: Non-blocking API calls
-- **File Cleanup**: Automatic temporary file management
-- **Error Recovery**: Graceful failure handling
-- **Rate Limiting**: Built-in API rate management
-
-## 🌍 **Global Impact & Use Cases**
-
-### **🎯 Target Users**
-- **Multilingual Communities**: Immigrant support
-- **Language Learners**: Mental health in native language  
-- **Cultural Minorities**: Culturally-aware support
-- **Global Organizations**: Employee mental health
-- **Healthcare Providers**: Multilingual patient support
-
-### **🏥 Professional Applications**
-- **Therapy Preparation**: Pre-session anxiety support
-- **Cultural Bridge**: Between therapist and patient
-- **Crisis First Aid**: Immediate multilingual support
-- **Educational Tool**: Mental health awareness
-- **Accessibility Aid**: For hearing/speech impaired
-
-## 🆘 **Mental Health Resources**
-
-⚠️ **IMPORTANT**: TellAFriend provides supportive conversation but is not a replacement for professional mental health care.
-
-### **🚨 Crisis Resources**
-- **International**: [findahelpline.com](https://findahelpline.com)
-- **US**: 988 Suicide & Crisis Lifeline
-- **UK**: 116 123 Samaritans
-- **Canada**: 1-833-456-4566
-- **Australia**: 13 11 14 Lifeline
-
-### **🌐 Global Mental Health Support**
-- **Crisis Text Line**: Text HOME to 741741
-- **International Association for Suicide Prevention**: [iasp.info](https://iasp.info)
-- **Mental Health America**: [mhanational.org](https://mhanational.org)
-- **World Health Organization**: [who.int/mental-health](https://who.int/mental-health)
-
-## 📈 **Roadmap & Future Features**
-
-### **🔮 Coming Soon**
-- [ ] **Mobile Apps**: Native iOS and Android apps
-- [ ] **Group Support**: Multilingual group chat rooms
-- [ ] **AI Therapists**: Specialized therapy AI models
-- [ ] **Emotion Recognition**: Facial/voice emotion analysis  
-- [ ] **Personalization**: Learning user preferences
-- [ ] **Integration**: WhatsApp, Telegram, Discord bots
-
-### **💡 Innovation Pipeline**
-- [ ] **AR/VR Support**: Immersive therapy sessions
-- [ ] **Wearable Integration**: Apple Watch, Fitbit support
-- [ ] **Family Features**: Support for family members
-- [ ] **Professional Tools**: Therapist dashboard
-- [ ] **Research Platform**: Anonymous usage insights
-
-## 📄 **License & Legal**
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-### **📝 Terms of Use**
-- Free for personal and educational use
-- Commercial use requires attribution
-- No warranty for medical outcomes
-- Users must be 13+ years old
-- Comply with local mental health regulations
-
-## 🙏 **Acknowledgments & Credits**
-
-### **🏢 Technology Partners**
-- **Google**: Gemini AI and Translation services
-- **AssemblyAI**: Speech recognition technology
-- **ElevenLabs**: Voice synthesis platform
-- **Flask Community**: Web framework support
-
-### **👥 Community**
-- **Mental Health Advocates**: Guidance and feedback
-- **Translators**: Language accuracy verification
-- **Beta Testers**: Cross-cultural testing
-- **Open Source Contributors**: Code improvements
-
-### **❤️ Special Thanks**
-- Mental health professionals who provided guidance
-- Multilingual community for language testing
-- Accessibility advocates for inclusive design
-- Crisis counselors for safety recommendations
+⚠️ Note: This is an **AI testing project** and should not be considered professional mental health care.
 
 ## 🌟 **Why TellAFriend Matters**
+With **1 in 4 people** facing mental health challenges, language barriers should never block access.  
 
-In a world where **1 in 4 people** experience mental health challenges, language barriers shouldn't prevent anyone from getting support. TellAFriend breaks down these barriers by providing:
+- 🌍 **Native language support**  
+- 🤖 **24/7 availability**  
+- 🎭 **Culturally aware**  
+- 🔒 **Confidential safe space**  
+- 🚀 **AI-powered assistance**
+- 
+⚠️ **Note:** This project was created **solely for learning purposes** and to explore how AI responds to expressions of sadness. It is **not intended as professional mental health support**.
+⭐ **Star this project if you like the concept!**
 
-- **🌍 Universal Access**: Support in your native language
-- **🤖 24/7 Availability**: Always there when you need to talk
-- **🎭 Cultural Sensitivity**: Understands cultural context
-- **🔒 Safe Space**: Judgment-free, confidential environment
-- **🚀 Innovative Technology**: Cutting-edge AI for better support
-
----
-
-**⭐ Star this project if it made a difference in your life or cou
+Feel free to **use, fork, and contribute** 🚀
