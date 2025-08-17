@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TellAFriend</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #333;
+            background: #1a1a1a;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dropdown-container {
+            position: relative;
+        }
+
+        .translation-btn,
+        .delete-btn,
+        .audio-toggle-btn {
+            background: #2d2d2d;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .translation-btn:hover,
+        .delete-btn:hover,
+        .audio-toggle-btn:hover {
+            background: #3d3d3d;
+            border-color: #555;
+        }
+
+        .audio-toggle-btn.active {
+            background: #007bff;
+            border-color: #0056b3;
+        }
+
+        .audio-toggle-text {
+            font-size: 12px;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 6px;
+            min-width: 160px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: #3d3d3d;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.bot .message-bubble {
+            background: #2d2d2d;
+            color: #fff;
+        }
+
+        .message.user .message-bubble {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .bot-avatar {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        .user-avatar {
+            background: #007bff;
+            color: #fff;
+        }
+
+        .input-container {
+            padding: 16px 20px;
+            border-top: 1px solid #333;
+            background: #1a1a1a;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: #2d2d2d;
+            border: 1px solid #444;
+            border-radius: 24px;
+            padding: 8px 16px;
+            gap: 8px;
+        }
+
+        .input-wrapper.focused {
+            border-color: #007bff;
+        }
+
+        .message-input {
+            flex: 1;
+            background: none;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            padding: 8px 0;
+        }
+
+        .message-input::placeholder {
+            color: #888;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            color: #fff;
+            background: #444;
+        }
+
+        .voice-btn.recording {
+            color: #ff4757;
+            background: #2d1b1e;
+        }
+
+        .send-btn {
+            color: #007bff;
+        }
+
+        .send-btn:disabled {
+            color: #444;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+            color: #888;
+            font-style: italic;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: #888;
+            border-radius: 50%;
+            animation: typing 1.4s ease-in-out infinite both;
+        }
+
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .recording-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 71, 87, 0.9);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 2000;
+            display: none;
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">TellAFriend</div>
+        <div class="controls">
+            <div class="dropdown-container">
+                <button class="translation-btn" id="translationBtn">
+                    Translation ▼
+                </button>
+                <div class="dropdown" id="translationDropdown">
+                    <div class="dropdown-item" data-lang="off">Off</div>
+                    <div class="dropdown-item" data-lang="english">English</div>
+                    <div class="dropdown-item" data-lang="spanish">Spanish</div>
+                    <div class="dropdown-item" data-lang="french">French</div>
+                    <div class="dropdown-item" data-lang="german">German</div>
+                    <div class="dropdown-item" data-lang="italian">Italian</div>
+                    <div class="dropdown-item" data-lang="portuguese">Portuguese</div>
+                    <div class="dropdown-item" data-lang="russian">Russian</div>
+                    <div class="dropdown-item" data-lang="chinese">Chinese</div>
+                    <div class="dropdown-item" data-lang="japanese">Japanese</div>
+                    <div class="dropdown-item" data-lang="korean">Korean</div>
+                    <div class="dropdown-item" data-lang="arabic">Arabic</div>
+                    <div class="dropdown-item" data-lang="hindi">Hindi</div>
+                    <div class="dropdown-item" data-lang="dutch">Dutch</div>
+                    <div class="dropdown-item" data-lang="polish">Polish</div>
+                    <div class="dropdown-item" data-lang="czech">Czech</div>
+                    <div class="dropdown-item" data-lang="slovak">Slovak</div>
+                    <div class="dropdown-item" data-lang="bulgarian">Bulgarian</div>
+                    <div class="dropdown-item" data-lang="croatian">Croatian</div>
+                    <div class="dropdown-item" data-lang="serbian">Serbian</div>
+                    <div class="dropdown-item" data-lang="romanian">Romanian</div>
+                    <div class="dropdown-item" data-lang="hungarian">Hungarian</div>
+                    <div class="dropdown-item" data-lang="lithuanian">Lithuanian</div>
+                    <div class="dropdown-item" data-lang="latvian">Latvian</div>
+                    <div class="dropdown-item" data-lang="estonian">Estonian</div>
+                    <div class="dropdown-item" data-lang="slovenian">Slovenian</div>
+                    <div class="dropdown-item" data-lang="maltese">Maltese</div>
+                    <div class="dropdown-item" data-lang="turkish">Turkish</div>
+                    <div class="dropdown-item" data-lang="ukrainian">Ukrainian</div>
+                    <div class="dropdown-item" data-lang="urdu">Urdu</div>
+                </div>
+            </div>
+            <button class="audio-toggle-btn" id="audioToggleBtn" title="Toggle auto voice responses">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
+                <span class="audio-toggle-text">Auto Voice</span>
+            </button>
+            <button class="delete-btn" id="deleteBtn">🗑</button>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="messages" id="messages">
+            <div class="welcome-message">
+                <div class="welcome-title">Hello, I'm TellAFriend</div>
+                <div class="welcome-subtitle">I'm here to listen and support you. Share what's on your mind, and I'll do
+                    my best to help.</div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="input-wrapper" id="inputWrapper">
+                <input type="text" class="message-input" id="messageInput"
+                    placeholder="Type a message or hold to record..." maxlength="1000" />
+                <div class="input-actions">
+                    <button class="action-btn voice-btn" id="voiceBtn" title="Hold to record">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                            <path
+                                d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                        </svg>
+                    </button>
+                    <button class="action-btn send-btn" id="sendBtn" title="Send message" disabled>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="recording-indicator" id="recordingIndicator">
+        🎤 Recording... Release to send
+    </div>
+
+    <script>
+        class TellAFriendChat {
+            constructor() {
+                this.messages = [];
+                this.currentLanguage = 'off';
+                this.autoVoiceEnabled = false;
+                this.isRecording = false;
+                this.isTyping = false;
+                this.currentAudio = null;
+                this.mediaRecorder = null;
+                this.audioChunks = [];
+                this.recordingStream = null;
+
+                this.initializeElements();
+                this.bindEvents();
+                this.initializeAudio();
+            }
+
+            initializeElements() {
+                this.messagesContainer = document.getElementById('messages');
+                this.messageInput = document.getElementById('messageInput');
+                this.sendBtn = document.getElementById('sendBtn');
+                this.voiceBtn = document.getElementById('voiceBtn');
+                this.translationBtn = document.getElementById('translationBtn');
+                this.translationDropdown = document.getElementById('translationDropdown');
+                this.audioToggleBtn = document.getElementById('audioToggleBtn');
+                this.deleteBtn = document.getElementById('deleteBtn');
+                this.inputWrapper = document.getElementById('inputWrapper');
+                this.recordingIndicator = document.getElementById('recordingIndicator');
+            }
+
+            async initializeAudio() {
+                try {
+                    this.recordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    console.log('Audio permissions granted');
+                    this.recordingStream.getTracks().forEach(track => track.stop());
+                } catch (error) {
+                    console.error('Audio permission denied:', error);
+                    this.showError('Microphone access denied. Please enable microphone permissions to use voice recording.');
+                }
+            }
+
+            bindEvents() {
+                this.messageInput.addEventListener('input', () => this.handleInputChange());
+                this.messageInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                this.messageInput.addEventListener('focus', () => {
+                    this.inputWrapper.classList.add('focused');
+                });
+                this.messageInput.addEventListener('blur', () => {
+                    this.inputWrapper.classList.remove('focused');
+                });
+
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.deleteBtn.addEventListener('click', () => this.clearChat());
+                this.audioToggleBtn.addEventListener('click', () => this.toggleAutoVoice());
+
+                // Voice recording events
+                this.voiceBtn.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    this.startRecording();
+                });
+                this.voiceBtn.addEventListener('mouseup', () => this.stopRecording());
+                this.voiceBtn.addEventListener('mouseleave', () => this.stopRecording());
+
+                // Touch events for mobile
+                this.voiceBtn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.startRecording();
+                });
+                this.voiceBtn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.stopRecording();
+                });
+
+                this.translationBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleTranslationDropdown();
+                });
+
+                document.addEventListener('click', () => {
+                    this.translationDropdown.classList.remove('active');
+                });
+
+                this.translationDropdown.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('dropdown-item')) {
+                        const lang = e.target.dataset.lang;
+                        this.setTranslationLanguage(lang);
+                    }
+                });
+            }
+
+            handleInputChange() {
+                const hasText = this.messageInput.value.trim().length > 0;
+                this.sendBtn.disabled = !hasText;
+            }
+
+            async sendMessage(audioBlob = null) {
+                let text = '';
+                
+                console.log('[DEBUG] sendMessage called with audioBlob:', audioBlob !== null);
+                
+                if (audioBlob) {
+                    // Handle audio input
+                    console.log('[DEBUG] Processing audio input...');
+                    try {
+                        text = await this.transcribeAudio(audioBlob);
+                        console.log('[DEBUG] Transcribed text:', text);
+                        if (!text || text.trim() === '') {
+                            this.showError('Could not transcribe audio. Please try again.');
+                            return;
+                        }
+                    } catch (error) {
+                        console.error('[DEBUG] Audio transcription failed:', error);
+                        this.showError('Could not transcribe audio. Please try again.');
+                        return;
+                    }
+                } else {
+                    // Handle text input
+                    text = this.messageInput.value.trim();
+                    console.log('[DEBUG] Text input:', text);
+                    if (!text || this.isTyping) return;
+                }
+
+                // Clear input
+                this.messageInput.value = '';
+                this.sendBtn.disabled = true;
+
+                // Add user message (always show original)
+                console.log('[DEBUG] Adding user message:', text);
+                this.addMessage('user', text);
+
+                // Generate AI response using original message
+                console.log('[DEBUG] Generating AI response...');
+                await this.generateResponse(text);
+            }
+
+            async transcribeAudio(audioBlob) {
+                try {
+                    console.log('[DEBUG] Starting audio transcription...', audioBlob);
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob, 'recording.wav');
+
+                    console.log('[DEBUG] Sending transcription request...');
+                    const response = await fetch('/transcribe', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    console.log('[DEBUG] Transcription response:', data);
+                    
+                    if (data.success) {
+                        console.log('[DEBUG] Transcription successful:', data.transcription);
+                        return data.transcription;
+                    } else {
+                        console.error('[DEBUG] Transcription failed:', data.error);
+                        throw new Error(data.error || 'Transcription failed');
+                    }
+                } catch (error) {
+                    console.error('[DEBUG] Transcription error:', error);
+                    throw error;
+                }
+            }
+
+            async generateResponse(userMessage) {
+                console.log('[DEBUG] generateResponse called with:', userMessage);
+                this.showTypingIndicator();
+
+                try {
+                    // Get AI response
+                    console.log('[DEBUG] Getting AI response...');
+                    const response = await this.getMentalSupportResponse(userMessage);
+                    console.log('[DEBUG] AI response received:', response);
+                    this.hideTypingIndicator();
+
+                    // Determine what to display
+                    let displayResponse = response;
+
+                    // If translation is enabled, translate the AI response
+                    if (this.currentLanguage !== 'off') {
+                        console.log('[DEBUG] Translating response to:', this.currentLanguage);
+                        displayResponse = await this.translateText(response, this.currentLanguage);
+                        console.log('[DEBUG] Translated response:', displayResponse);
+                    }
+
+                    // Add response message
+                    console.log('[DEBUG] Adding bot message:', displayResponse);
+                    this.addMessage('bot', displayResponse);
+
+                    // Use for TTS (use translated version if available)
+                    if (this.autoVoiceEnabled) {
+                        console.log('[DEBUG] Playing TTS for:', displayResponse);
+                        this.speakText(displayResponse);
+                    }
+
+                } catch (error) {
+                    console.error('[DEBUG] generateResponse error:', error);
+                    this.hideTypingIndicator();
+                    this.addMessage('bot', "I'm here to listen. Your feelings are valid, and you're not alone in this.");
+                }
+            }
+
+            async getMentalSupportResponse(userMessage) {
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: userMessage })
+                    });
+                    const data = await response.json();
+                    return data.response;
+                } catch (error) {
+                    console.error('Error getting AI response:', error);
+                    throw error;
+                }
+            }
+
+            async translateText(text, targetLanguage) {
+                try {
+                    const response = await fetch('/translate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            text: text,
+                            target_language: targetLanguage 
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        return data.translated_text;
+                    } else {
+                        console.error('Translation error:', data.error);
+                        return text;
+                    }
+                    
+                } catch (error) {
+                    console.error('Translation request failed:', error);
+                    return text;
+                }
+            }
+
+            addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}`;
+
+                const avatar = document.createElement('div');
+                avatar.className = `avatar ${sender}-avatar`;
+                avatar.textContent = sender === 'bot' ? 'T' : 'Y';
+
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.textContent = text;
+
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(bubble);
+
+                // Remove welcome message if it exists
+                const welcome = this.messagesContainer.querySelector('.welcome-message');
+                if (welcome) {
+                    welcome.remove();
+                }
+
+                this.messagesContainer.appendChild(messageDiv);
+                this.scrollToBottom();
+
+                this.messages.push({ sender, text, timestamp: Date.now() });
+            }
+
+            showTypingIndicator() {
+                if (this.isTyping) return;
+                this.isTyping = true;
+
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot typing-message';
+                typingDiv.innerHTML = `
+                    <div class="avatar bot-avatar">T</div>
+                    <div class="typing-indicator">
+                        TellAFriend is typing
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                `;
+
+                this.messagesContainer.appendChild(typingDiv);
+                this.scrollToBottom();
+            }
+
+            hideTypingIndicator() {
+                const typingMessage = this.messagesContainer.querySelector('.typing-message');
+                if (typingMessage) {
+                    typingMessage.remove();
+                }
+                this.isTyping = false;
+            }
+
+            async startRecording() {
+                if (this.isRecording) return;
+
+                try {
+                    // Get fresh stream for recording
+                    this.recordingStream = await navigator.mediaDevices.getUserMedia({ 
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 44100
+                        } 
+                    });
+
+                    this.mediaRecorder = new MediaRecorder(this.recordingStream, {
+                        mimeType: 'audio/webm;codecs=opus'
+                    });
+
+                    this.audioChunks = [];
+
+                    this.mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            this.audioChunks.push(event.data);
+                        }
+                    };
+
+                    this.mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(this.audioChunks, { type: 'audio/webm' });
+                        this.sendMessage(audioBlob);
+                        
+                        // Stop the stream
+                        this.recordingStream.getTracks().forEach(track => track.stop());
+                    };
+
+                    this.mediaRecorder.start();
+                    this.isRecording = true;
+                    this.voiceBtn.classList.add('recording');
+                    this.messageInput.placeholder = 'Recording... Release to send';
+                    this.recordingIndicator.style.display = 'block';
+                    
+                    console.log('Recording started...');
+
+                } catch (error) {
+                    console.error('Recording start error:', error);
+                    this.showError('Could not start recording. Please check microphone permissions.');
+                }
+            }
+
+            stopRecording() {
+                if (!this.isRecording || !this.mediaRecorder) return;
+
+                this.isRecording = false;
+                this.voiceBtn.classList.remove('recording');
+                this.messageInput.placeholder = 'Type a message or hold to record...';
+                this.recordingIndicator.style.display = 'none';
+
+                try {
+                    if (this.mediaRecorder.state === 'recording') {
+                        this.mediaRecorder.stop();
+                    }
+                    console.log('Recording stopped...');
+                } catch (error) {
+                    console.error('Recording stop error:', error);
+                }
+            }
+
+            toggleAutoVoice() {
+                this.autoVoiceEnabled = !this.autoVoiceEnabled;
+
+                if (this.autoVoiceEnabled) {
+                    this.audioToggleBtn.classList.add('active');
+                    this.audioToggleBtn.title = 'Auto voice enabled - responses will be spoken';
+                } else {
+                    this.audioToggleBtn.classList.remove('active');
+                    this.audioToggleBtn.title = 'Toggle auto voice responses';
+                    if (this.currentAudio) {
+                        this.currentAudio.pause();
+                        this.currentAudio = null;
+                    }
+                }
+            }
+
+            async speakText(text) {
+                if (this.currentAudio) {
+                    this.currentAudio.pause();
+                }
+
+                try {
+                    const response = await fetch('/tts', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: text })
+                    });
+
+                    if (response.ok) {
+                        const audioBlob = await response.blob();
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        this.currentAudio = new Audio(audioUrl);
+                        
+                        this.currentAudio.onended = () => {
+                            URL.revokeObjectURL(audioUrl);
+                        };
+                        
+                        await this.currentAudio.play();
+                    } else {
+                        throw new Error('TTS request failed');
+                    }
+                } catch (error) {
+                    console.error('TTS error:', error);
+                    this.fallbackTTS(text);
+                }
+            }
+
+            fallbackTTS(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1;
+                    utterance.volume = 0.8;
+                    speechSynthesis.speak(utterance);
+                }
+            }
+
+            toggleTranslationDropdown() {
+                this.translationDropdown.classList.toggle('active');
+            }
+
+            setTranslationLanguage(language) {
+                this.currentLanguage = language;
+                const displayText = language === 'off' ? 'Translation' : language.charAt(0).toUpperCase() + language.slice(1);
+                this.translationBtn.textContent = `${displayText} ▼`;
+                this.translationDropdown.classList.remove('active');
+
+                if (language !== 'off') {
+                    this.showNotification(`Translation enabled for ${displayText}`);
+                } else {
+                    this.showNotification('Translation disabled');
+                }
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 70px;
+                    right: 20px;
+                    background: #007bff;
+                    color: white;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    font-size: 12px;
+                    z-index: 1001;
+                    animation: slideIn 0.3s ease;
+                `;
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 2000);
+            }
+
+            showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-message';
+                errorDiv.textContent = message;
+                
+                this.messagesContainer.appendChild(errorDiv);
+                this.scrollToBottom();
+                
+                setTimeout(() => {
+                    if (errorDiv.parentNode) {
+                        errorDiv.parentNode.removeChild(errorDiv);
+                    }
+                }, 5000);
+            }
+
+            clearChat() {
+                if (confirm('Are you sure you want to clear all messages?')) {
+                    this.messages = [];
+                    this.messagesContainer.innerHTML = `
+                        <div class="welcome-message">
+                            <div class="welcome-title">Hello, I'm TellAFriend</div>
+                            <div class="welcome-subtitle">I'm here to listen and support you. Share what's on your mind, and I'll do my best to help.</div>
+                        </div>
+                    `;
+                }
+            }
+
+            scrollToBottom() {
+                this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new TellAFriendChat();
+        });
+    </script>
+</body>
+</html>

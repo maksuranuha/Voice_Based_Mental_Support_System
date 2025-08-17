@@ -1,0 +1,11 @@
+assemblyai
+deep-translator
+google-generativeai
+elevenlabs
+python-dotenv
+sounddevice
+numpy
+streamlit
+langdetect
+flask
+flask-cors
